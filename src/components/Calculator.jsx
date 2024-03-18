@@ -4,15 +4,14 @@ const Calculator = () => {
   const [displayValue, setDisplayValue] = useState('');
   const [previousValue, setPreviousValue] = useState('');
   const [operator, setOperator] = useState('');
-  
 
   const handleButtonClick = (value) => {
     if (value === '=') {
       calculateResult();
     } else if (value === 'C') {
       clearDisplay();
-    } else if (value === 'Backspace') {
-      removeLastCharacter();
+    } else if (value === '+/-') {
+      changeSign();
     } else if (isOperator(value)) {
       if (displayValue !== '') {
         if (previousValue && operator) {
@@ -28,7 +27,6 @@ const Calculator = () => {
       setDisplayValue(displayValue + value);
     }
   };
-  
 
   const isOperator = (value) => {
     return value === '+' || value === '-' || value === '*' || value === '/' || value === '%';
@@ -40,8 +38,10 @@ const Calculator = () => {
     setOperator('');
   };
 
-  const removeLastCharacter = () => {
-    setDisplayValue(displayValue.slice(0, -1));
+  const changeSign = () => {
+    if (displayValue !== '') {
+      setDisplayValue(String(-parseFloat(displayValue)));
+    }
   };
 
   const calculateResult = () => {
@@ -49,7 +49,7 @@ const Calculator = () => {
       const operatorIndex = displayValue.indexOf(operator);
       const currentValue = parseFloat(displayValue.substring(operatorIndex + 1));
       const previousNumber = parseFloat(previousValue);
-  
+
       let result;
       switch (operator) {
         case '+':
@@ -70,7 +70,7 @@ const Calculator = () => {
         default:
           return;
       }
-  
+
       console.log('Result:', result);
       setDisplayValue(String(result));
       setPreviousValue(String(result)); // Set previous value as result
@@ -93,9 +93,9 @@ const Calculator = () => {
       </div>
       <div className="buttons">
         <div className='row'>
-        <button onClick={() => handleButtonClick('C')} className='white' style={{borderRadius:"50%", padding: "14px 10px", margin:"5px 9px"}}>AC</button>
-        <button onClick={() => handleButtonClick('Backspace')} className='b white' style={{ padding: "14px 22px", margin:"5px 8px"}}>C</button>
-        <button onClick={() => handleButtonClick('%')} className='b white'  style={{ padding: "14px 19px", margin:"5px 9px"}}>%</button>
+        <button onClick={() => handleButtonClick('C')} className='white' style={{borderRadius:"50%", padding: "14px 11px", margin:"5px 9px"}}>AC</button>
+        <button onClick={() => handleButtonClick('+/-')} className='b white' style={{ padding: "14px 13px", margin:"5px 8px"}}>+/-</button>
+        <button onClick={() => handleButtonClick('%')} className='b white'  style={{ padding: "14px 20px", margin:"5px 9px"}}>%</button>
         <button onClick={() => handleButtonClick('/')} className='b orange'  style={{ padding: "14px 23px", margin:"5px 9px"}}>÷</button>
         </div>
 
